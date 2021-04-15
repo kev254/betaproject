@@ -1,3 +1,42 @@
+<?php
+error_reporting(0);
+include('includes/config.php');
+if(isset($_POST['submit']))
+  {
+$fullname=$_POST['fullname'];
+$mobile=$_POST['mobileno'];
+$email=$_POST['emailid'];
+$age=$_POST['age'];
+$gender=$_POST['gender'];
+$blodgroup=$_POST['bloodgroup'];
+$address=$_POST['address'];
+$message=$_POST['message'];
+$status=1;
+$sql="INSERT INTO  tblblooddonars(FullName,MobileNumber,EmailId,Age,Gender,BloodGroup,Address,Message,status) VALUES(:fullname,:mobile,:email,:age,:gender,:blodgroup,:address,:message,:status)";
+$query = $dbh->prepare($sql);
+$query->bindParam(':fullname',$fullname,PDO::PARAM_STR);
+$query->bindParam(':mobile',$mobile,PDO::PARAM_STR);
+$query->bindParam(':email',$email,PDO::PARAM_STR);
+$query->bindParam(':age',$age,PDO::PARAM_STR);
+$query->bindParam(':gender',$gender,PDO::PARAM_STR);
+$query->bindParam(':blodgroup',$blodgroup,PDO::PARAM_STR);
+$query->bindParam(':address',$address,PDO::PARAM_STR);
+$query->bindParam(':message',$message,PDO::PARAM_STR);
+$query->bindParam(':status',$status,PDO::PARAM_STR);
+$query->execute();
+$lastInsertId = $dbh->lastInsertId();
+if($lastInsertId)
+{
+$msg="Thank You for your support";
+}
+else 
+{
+$error="Something went wrong. Please try again";
+}
+
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,8 +46,8 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
   <title></title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+  
+ 
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -26,153 +65,113 @@
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="assets/css/style.css" rel="stylesheet">
   <style type="text/css">
-
+    img{
+      height: 200px;
+      width: 100%;
+      border-radius: 6px;
+    }
   </style>
 
 </head>
 
 <body>
   <?php include('nav.php')?>
-    <div id="wrapper">
-
-
-        <div class="container-fluid body-section container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h2><i class="fa fa-plus-square"></i> Add Food <small>Add New Food</small></h2>
-                    
-                    <?php
-                    require('connection.php');
-                    if(isset($_POST['submit'])){
-                        $Name = mysqli_real_escape_string($con,$_POST['Name']);
-                        $post_data = mysqli_real_escape_string($con,$_POST['post-data']);
-                        $Location = mysqli_real_escape_string($con,$_POST['Location']);
-                        $Time = mysqli_real_escape_string($con,$_POST['Time']);
-                        
-                        $image1 = $_FILES['image1']['name'];
-                        $tmp_name1 = $_FILES['image1']['tmp_name'];
-                        $image2 = $_FILES['image2']['name'];
-                        $tmp_name2 = $_FILES['image2']['tmp_name'];
-                        $image3 = $_FILES['image3']['name'];
-                        $tmp_name3 = $_FILES['image3']['tmp_name'];
-                        $image4 = $_FILES['image4']['name'];
-                        $tmp_name4 = $_FILES['image4']['tmp_name'];
-                        
-                        $q = "SELECT * FROM Foods ORDER BY Foods.id DESC LIMIT 1";
-                        $r = mysqli_query($con, $q);
-                        if(mysqli_num_rows($r) > 0){
-                            $row = mysqli_fetch_array($r);
-                            $id = $row['id'];
-                            $id = $id + 1;
-                        }
-                        else{
-                            $id = 1;
-                        }
-                        
-                        
-                        if(empty($Name) or empty($post_data) or empty($Location) or empty($Time) or empty($image1) or empty($image2) or empty($image3) or empty($image4)){
-                            $error = "All (*) Feilds Are Required";
-                            
-                        }
-                        else{
-                            $insert_query = "INSERT INTO Foods (`id`,`Name`,`description`,`Location`,`Time`,`image1`,`image2`,`image3`,`image4`) VALUES ($id,'$Name','$post_data','$Location','$Time','$image1','$image2','$image3','$image4')";
-                            if(mysqli_query($con, $insert_query)){
-                                $path1 = "images/photos/$image1";
-                                $path2 = "images/photos/$image2";
-                                $path3 = "images/photos/$image3";
-                                $path4 = "images/photos/$image4";
-                                if(move_uploaded_file($tmp_name1, $path1) and move_uploaded_file($tmp_name2, $path2) and move_uploaded_file($tmp_name3, $path3) and move_uploaded_file($tmp_name4, $path4)){
-                                    $msg = "Post has been added";
-                                    $Name = "";
-                                    $post_data = "";
-                                    $Location = "";
-                                    $Time = "";
-                                    copy($path1, "$path1");
-                                    copy($path2, "$path2");
-                                    copy($path3, "$path3");
-                                    copy($path4, "$path4");
-                                }
-                            }
-                            else{
-                                $error = "Post Has not Been Added";
-                            }
-                        }
-                    }
-                    ?>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <form action="" method="post" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <label for="Name">Food Name:*</label>
-                                    <?php
-                                    if(isset($msg)){
-                                        echo "<span class='pull-right' style='color:green;'>$msg</span>";
-                                    }
-                                    else if(isset($error)){
-                                        echo "<span class='pull-right' style='color:red;'>$error</span>";
-                                    }
-                                    ?>
-                                    <input type="text" name="Name" placeholder="Type Food Name Here" value="<?php if(isset($Name)){echo $Name;}?>" class="form-control">
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="Name">Food Description:*</label>
-                                    <textarea name="post-data" id="textarea" rows="10" class="form-control"><?php if(isset($post_data)){echo $post_data;}?></textarea>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="Location">Location:*</label>
-                                            <input type="text" name="Location" placeholder="Type Location Here (sq. feet)" value="<?php if(isset($Name)){echo $Location;}?>" class="form-control">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label for="Name">Time:*</label>
-                                            <input type="text" name="Time" placeholder="Type Time Here (Taka)" value="<?php if(isset($Name)){echo $Time;}?>" class="form-control">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label for="file">Image 1:*</label>
-                                            <input type="file" name="image1">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label for="file">Image 2:*</label>
-                                            <input type="file" name="image2">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label for="file">Image 3:*</label>
-                                            <input type="file" name="image3">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-sm-3">
-                                        <div class="form-group">
-                                            <label for="file">Image 4:*</label>
-                                            <input type="file" name="image4">
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <input type="submit" class="btn btn-primary" value="Add Food" name="submit">
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Page Content -->
+    <center>
+        <div class="alert alert-success" role="alert">
+        Donate Here
     </div>
-</body>
-</html>
+    </center>
+    <div class="container">
+      <?php if($error){?><div class="errorWrap"><strong>ERROR</strong>:<?php echo htmlentities($error); ?> </div><?php } 
+        else if($msg){?><div class="succWrap"><strong>SUCCESS</strong>:<?php echo htmlentities($msg); ?> </div><?php }?>
+        <!-- Content Row -->
 
+  <form name="donar" method="post">
+<div class="row">
+<div class="col-lg-4 mb-4">
+<div class="font-italic">Full Name<span style="color:red">*</span></div>
+<div><input type="text" name="fullname" class="form-control" required></div>
+</div>
+<div class="col-lg-4 mb-4">
+<div class="font-italic">Mobile Number<span style="color:red">*</span></div>
+<div><input type="text" name="mobileno" class="form-control" required></div>
+</div>
+<div class="col-lg-4 mb-4">
+<div class="font-italic">Email Id</div>
+<div><input type="email" name="emailid" class="form-control"></div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-lg-4 mb-4">
+<div class="font-italic">Age<span style="color:red">*</span></div>
+<div><input type="text" name="age" class="form-control" required></div>
+</div>
+
+
+<div class="col-lg-4 mb-4">
+<div class="font-italic">Gender<span style="color:red">*</span></div>
+<div><select name="gender" class="form-control" required>
+<option value="">Select</option>
+<option value="Male">Male</option>
+<option value="Female">Female</option>
+</select>
+</div>
+</div>
+
+<div class="col-lg-4 mb-4">
+<div class="font-italic">Food Name<span style="color:red">*</span> </div>
+<div><select name="bloodgroup" class="form-control" required>
+<?php $sql = "SELECT * from  tblbloodgroup ";
+$query = $dbh -> prepare($sql);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{               ?>  
+<option value="<?php echo htmlentities($result->BloodGroup);?>"><?php echo htmlentities($result->BloodGroup);?></option>
+<?php }} ?>
+</select>
+</div>
+</div>
+</div>
+
+
+<div class="row">
+<div class="col-lg-4 mb-4">
+<div class="font-italic">Address</div>
+<div><textarea class="form-control" name="address"></textarea></div>
+</div>
+
+<div class="col-lg-8 mb-4">
+<div class="font-italic">Message<span style="color:red">*</span></div>
+<div><textarea class="form-control" name="message" required> </textarea></div>
+</div>
+</div>
+
+<div class="row">
+<div class="col-lg-4 mb-4">
+<div><input type="submit" name="submit" class="btn btn-primary" value="submit" style="cursor:pointer"></div>
+</div>
+
+
+
+</div>
+
+
+
+        <!-- /.row -->
+</form> 
+</div>
+  <?php include('includes/footer.php');?>
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/tether/tether.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

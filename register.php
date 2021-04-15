@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>School | Register</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+	<title>Food sahre | Register</title>
+	<<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 	<style type="text/css">
 		form{
 			text-align: center;
-			width: 30%;
-
-
+			width: 80%;
 		}
+		img{
+			height: 200px;
+			width: 200px;
+		}
+	
 	</style>
 </head>
 <body>
+	<br><br>
+	
 	<div class="container">
+		<center>
+		<div class="alert alert-success" role="alert">
+  			<h3>Login to Proceed</h3>
+			</div>
+			</center>
 
-		<div class="row">
+			<div class="row">
+			<div class="col-4">
+					<img src="https://cdn.pixabay.com/photo/2015/12/08/19/08/castle-1083570__340.png" class="img-fluid">
+			</div>
+			
 			
 			<div class="col">
 				<center>
@@ -33,21 +47,7 @@
 					
 					  </div>
 
-					   <div class="mb-3">
-					    <label for="exampleInputEmail1" class="form-label">Phone Number</label>
-					    <input type="text" class="form-control" name="phone" required>
-					
-					  </div>
-					  <div class="mb-3">
-					    <label for="exampleInputEmail1" class="form-label">Location</label>
-					    <input type="text" class="form-control" name="location" required>
-					
-					  </div>
-					   <div class="mb-3">
-					    <label for="exampleInputEmail1" class="form-label">Role</label>
-					    <input type="text" class="form-control" name="role" required>
-					
-					  </div>
+	
 
 					    <div class="mb-3">
 					    <label for="exampleInputEmail1" class="form-label">Password</label>
@@ -69,15 +69,13 @@
 					
 					$fullName = $_POST['full_name'];
 					$email = $_POST['email'];
-					$phone = $_POST['phone'];
-					$location = $_POST['location'];
-					$role=$_POST['role'];
+					$role = 'user';
 					$password = $_POST['password'];
 
 					
 					//$encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-					$query = "INSERT INTO users VALUES('$fullName', '$email','$phone', '$location','$role', '$password')";
+					$query = "INSERT INTO users VALUES('$fullName', '$email','$role', '$password')";
 					
 					$executeQuery = mysqli_query($con, $query);
 					if ($executeQuery) 

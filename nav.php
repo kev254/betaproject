@@ -42,10 +42,7 @@ session_start();
           <li class="nav-item">
             <a class="nav-link" href="donate.php">Donate</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="help.php">Get Help</a>
-          </li>
-          <li class="nav-item">
+            <li class="nav-item">
             <a class="nav-link" href="about.php">About Us</a>
           </li>
           <li class="nav-item">
@@ -56,14 +53,12 @@ session_start();
       }elseif ($_SESSION['role']=='admin'){
         echo '
             <li class="nav-item">
-              <a class="nav-link" href="all-food.php">Home</a>
+              <a class="nav-link" href="index.php">Home</a>
           </li>
           <li class="nav-item">
-              <a class="nav-link" href="blockuser.php">Block User</a>
+              <a class="nav-link" href="../admin/blockuser.php">Block User</a>
           </li>
-          <li class="nav-item">
-              <a class="nav-link" href="edit-food.php">Manage Donations</a>
-          </li>';
+          ';
       }
     
       echo '<li class="nav-item"><a class="nav-link disabled" href="" tabindex="-1" aria-disabled="true"> Hi, '.$_SESSION['name'].'</a></li>

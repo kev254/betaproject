@@ -1,22 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>School | Login</title>
+	<title>Login</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 	<style type="text/css">
 		form{
 			text-align: center;
-			width: 30%;
-
-
+			width: 80%;
 		}
+		img{
+			height: 200px;
+			width: 200px;
+		}
+	
 	</style>
 </head>
 <body>
-	<div class="container">
-
+	<br><br>
 	
-		<div class="row">
+	<div class="container">
+		<center>
+		<div class="alert alert-success" role="alert">
+  			<h3>Login to Proceed</h3>
+			</div>
+			</center>
+
+			<div class="row">
+			<div class="col-4">
+					<img src="https://cdn.pixabay.com/photo/2015/12/08/19/08/castle-1083570__340.png" class="img-fluid">
+			</div>
+			
 			
 			<div class="col">
 				<center>
@@ -29,30 +42,20 @@
                         <div class="form-group">
                                 <label for="">Password</label>
                                  <input type="password" class="form-control" name="password">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Role</label>
-                            <center>
-                           <select name="role" id="" class="form-control">
-                               <option value="">Select Your Role</option>
-                               <option value="user">User</option>
-                               <option value="admin">Admin</option>
-                           </select>
-                           </center>
-                       </div>
-
-                       
+                             </div>
+                      
                        <div class="form-group">
                        	<br>
                            <input type="submit" class="btn btn-success" name="login" value="Login">
                        </div>
                    </form>
-                    <?php
+
+                   <?php
 
 			if (isset($_POST['login'])) {
 			
 				$email = $_POST['email'];
-				$role= $_POST['role'];
+				$role= 'user';
 				$password = $_POST['password'];
 
 				echo "$role";
@@ -97,7 +100,7 @@
 					}
 
 					}else{
-						echo "Something is wrong ".mysqli_error($con);
+						echo "Something is wrong ".mysqli_error($cnn);
 					}
 
 				}else{

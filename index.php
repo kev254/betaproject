@@ -1,23 +1,22 @@
+<?php
+error_reporting(0);
+include('includes/config.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title></title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-  <!-- Favicons -->
-  <link href="assets/img/favicon.png" rel="icon">
-  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
-
-  <!-- Vendor CSS Files -->
-  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+    <title>Food share | Home</title>
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="css/modern-business.css" rel="stylesheet">
+    <link href="assets/vendor/aos/aos.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
@@ -31,42 +30,35 @@
       border-radius: 6px;
     }
   </style>
+    <style>
+    .navbar-toggler {
+        z-index: 1;
+    }
+    
+    @media (max-width: 576px) {
+        nav > .container {
+            width: 100%;
+        }
+    }
+    .carousel-item.active,
+    .carousel-item-next,
+    .carousel-item-prev {
+        display: block;
+    }
+    </style>
 
 </head>
 
 <body>
-  <?php include('nav.php')?>
 
- <!--  <header id="header" class="fixed-top">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
+<?php include('nav.php')?>
 
-      <h1 class="logo me-auto me-lg-0"><a href="index.html">Food Share</a></h1>
-
-      <nav id="navbar" class="navbar order-last order-lg-0">
-        <ul>
-          <li><a class="active" href="index.php">Home</a></li>
-          <li><a href="help.php">Get Help</a></li>
-          <li><a href="donate.php">Donate</a></li>
-          <li><a href="contact.php">contact</a></li>
-          <li><a href="about.php">About Us</a></li>
-          <li><a href="login.php" class="btn-about">Login</a></li>
-          <li><a href="register.php" class="btn-about">SignUp</a></li>
-        </ul>
-        <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav>
-
-      
-
-    </div>
-
-  </header><!-- End Header -->
-
-  <!-- ======= Hero Section ======= -->
+ 
   <section id="hero" class="d-flex align-items-center">
     <div class="container d-flex flex-column align-items-center" data-aos="zoom-in" data-aos-delay="100">
-      <h1>Fodd Share</h1>
+      <h1>Food Share</h1>
       <h2>Sharing is caring</h2>
-      <a href="about.php" class="btn-about">About Us</a>
+      <a href="register.php" class="btn-about">Join Us</a>
     </div>
   </section>
 
@@ -79,39 +71,47 @@
           <h2>Donations</h2>
         </div>
 
-  <div class="row">
-  <?php
-    require_once('connection.php');
-    $q = "SELECT * FROM Rooms ORDER BY Rooms.id ASC";
-    $run = mysqli_query($con, $q);
-    $count = 0;
-    if(mysqli_num_rows($run) > 0){
-        while($row = mysqli_fetch_array($run)){
-  ?>
-  <div class="col-sm-6 wowload fadeInUp">
-      <div class="Rooms">
-       <div class="card" style="width: 30rem;">
-      <img src="images/photos/<?php echo $row['image1']; ?>" class="img-responsive" class="card-img-top" alt="...">
-      <div class="card-body">
-    <h5 class="card-title"><?php echo $row['Name']; ?></h5>
-    <p class="card-text">Location: <?php echo $row['Location']; ?><br> Posted: <?php echo $row['Time']; ?></p>
-    <a href="Food-details.php?id=<?php echo $row['id']; ?>" class="btn btn-success">Contact Owner</a>
-  </div>
-</div>
-      </div>
-  </div>
-  <?php
-        }
-    }
-  ?>
-  
-  
-</div>
-  
-</div>
+       <div class="row">
+                   <?php 
+$status=1;
+$sql = "SELECT * from tblblooddonars where status=:status order by rand() limit 6";
+$query = $dbh -> prepare($sql);
+$query->bindParam(':status',$status,PDO::PARAM_STR);
+$query->execute();
+$results=$query->fetchAll(PDO::FETCH_OBJ);
+$cnt=1;
+if($query->rowCount() > 0)
+{
+foreach($results as $result)
+{ ?>
 
+            <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                    <a href="#"><img class="card-img-top img-fluid" src="https://cdn.pixabay.com/photo/2017/12/10/14/47/pizza-3010062__340.jpg" alt="" ></a>
+                    <div class="card-block">
+                        <h4 class="card-title"><a href="#"><?php echo htmlentities($result->BloodGroup);?></a></h4>
+<p class="card-text"><b>  Address :</b> <?php echo htmlentities($result->Address);?></p>
+<p class="card-text"><b>Contact :</b> <?php echo htmlentities($result->MobileNumber);?></p>
+
+                    </div>
+                    <button type="button" class="btn btn-success">Call</button>
+                </div>
+            </div>
+
+            <?php }} ?>
+          
  
-  <footer id="footer">
+
+
+
+        </div>
+ 
+
+
+
+        </div>
+        </div>
+    <footer id="footer">
     <div class="container">
       <div class="copyright">
         &copy; Copyright <strong><span>foodshare</span></strong>. All Rights Reserved
@@ -134,6 +134,9 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/tether/tether.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 
